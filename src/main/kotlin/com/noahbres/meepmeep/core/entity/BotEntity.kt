@@ -82,43 +82,47 @@ open class BotEntity(
             colorScheme.BOT_BODY_COLOR.blue, (opacity * 255).toInt()
         )
         gfx.color = colorAlphaBody
+        if(!MeepMeep.CONTROL) {
         gfx.fillRect(0, 0, canvasWidth.toInt(), canvasHeight.toInt())
+
 
         val colorAlphaWheel = Color(
             colorScheme.BOT_WHEEL_COLOR.red, colorScheme.BOT_WHEEL_COLOR.green,
             colorScheme.BOT_BODY_COLOR.blue, (opacity * 255).toInt()
         )
         gfx.color = colorAlphaWheel
-        gfx.fillRect(
-            (WHEEL_PADDING_X * canvasWidth).toInt(), (WHEEL_PADDING_Y * canvasHeight).toInt(),
-            (WHEEL_WIDTH * canvasWidth).toInt(), (WHEEL_HEIGHT * canvasHeight).toInt()
-        )
-        gfx.fillRect(
-            (canvasWidth - WHEEL_WIDTH * canvasWidth - WHEEL_PADDING_X * canvasWidth).toInt(),
-            (WHEEL_PADDING_Y * canvasHeight).toInt(), (WHEEL_WIDTH * canvasWidth).toInt(),
-            (WHEEL_HEIGHT * canvasHeight).toInt()
-        )
-        gfx.fillRect(
-            (canvasWidth - WHEEL_WIDTH * canvasWidth - WHEEL_PADDING_X * canvasWidth).toInt(),
-            (canvasHeight - WHEEL_HEIGHT * canvasHeight - WHEEL_PADDING_Y * canvasHeight).toInt(),
-            (WHEEL_WIDTH * canvasWidth).toInt(), (WHEEL_HEIGHT * canvasHeight).toInt()
-        )
-        gfx.fillRect(
-            (WHEEL_PADDING_X * canvasWidth).toInt(),
-            (canvasHeight - WHEEL_HEIGHT * canvasHeight - WHEEL_PADDING_Y * canvasHeight).toInt(),
-            (WHEEL_WIDTH * canvasWidth).toInt(), (WHEEL_HEIGHT * canvasHeight).toInt()
-        )
 
-        val colorAlphaDirection = Color(
-            colorScheme.BOT_DIRECTION_COLOR.red, colorScheme.BOT_DIRECTION_COLOR.green,
-            colorScheme.BOT_DIRECTION_COLOR.blue, (opacity * 255).toInt()
-        )
-        gfx.color = colorAlphaDirection
-        gfx.fillRect(
-            (canvasWidth / 2 - DIRECTION_LINE_WIDTH * canvasWidth / 2).toInt(), 0,
-            (DIRECTION_LINE_WIDTH * canvasWidth).toInt(),
-            (canvasHeight * DIRECTION_LINE_HEIGHT).toInt()
-        )
+            gfx.fillRect(
+                (WHEEL_PADDING_X * canvasWidth).toInt(), (WHEEL_PADDING_Y * canvasHeight).toInt(),
+                (WHEEL_WIDTH * canvasWidth).toInt(), (WHEEL_HEIGHT * canvasHeight).toInt()
+            )
+            gfx.fillRect(
+                (canvasWidth - WHEEL_WIDTH * canvasWidth - WHEEL_PADDING_X * canvasWidth).toInt(),
+                (WHEEL_PADDING_Y * canvasHeight).toInt(), (WHEEL_WIDTH * canvasWidth).toInt(),
+                (WHEEL_HEIGHT * canvasHeight).toInt()
+            )
+            gfx.fillRect(
+                (canvasWidth - WHEEL_WIDTH * canvasWidth - WHEEL_PADDING_X * canvasWidth).toInt(),
+                (canvasHeight - WHEEL_HEIGHT * canvasHeight - WHEEL_PADDING_Y * canvasHeight).toInt(),
+                (WHEEL_WIDTH * canvasWidth).toInt(), (WHEEL_HEIGHT * canvasHeight).toInt()
+            )
+            gfx.fillRect(
+                (WHEEL_PADDING_X * canvasWidth).toInt(),
+                (canvasHeight - WHEEL_HEIGHT * canvasHeight - WHEEL_PADDING_Y * canvasHeight).toInt(),
+                (WHEEL_WIDTH * canvasWidth).toInt(), (WHEEL_HEIGHT * canvasHeight).toInt()
+            )
+
+            val colorAlphaDirection = Color(
+                colorScheme.BOT_DIRECTION_COLOR.red, colorScheme.BOT_DIRECTION_COLOR.green,
+                colorScheme.BOT_DIRECTION_COLOR.blue, (opacity * 255).toInt()
+            )
+            gfx.color = colorAlphaDirection
+            gfx.fillRect(
+                (canvasWidth / 2 - DIRECTION_LINE_WIDTH * canvasWidth / 2).toInt(), 0,
+                (DIRECTION_LINE_WIDTH * canvasWidth).toInt(),
+                (canvasHeight * DIRECTION_LINE_HEIGHT).toInt()
+            )
+        }
     }
 
     override fun switchScheme(scheme: ColorScheme) {

@@ -169,11 +169,12 @@ class TrajectorySequenceEntity(
 
         gfx.stroke = innerStroke
         gfx.color = colorScheme.TRAJCETORY_PATH_COLOR
-        gfx.color = Color(
-            colorScheme.TRAJCETORY_PATH_COLOR.red, colorScheme.TRAJCETORY_PATH_COLOR.green,
-            colorScheme.TRAJCETORY_PATH_COLOR.blue, (PATH_UNFOCUSED_OPACTIY * 255).toInt()
+        if(!MeepMeep.CONTROL)
+            gfx.color = Color(
+                colorScheme.TRAJCETORY_PATH_COLOR.red, colorScheme.TRAJCETORY_PATH_COLOR.green,
+                colorScheme.TRAJCETORY_PATH_COLOR.blue, (PATH_UNFOCUSED_OPACTIY * 255).toInt()
 
-        )
+            )
         gfx.draw(trajectoryDrawnPath)
     }
 
@@ -229,11 +230,13 @@ class TrajectorySequenceEntity(
             colorScheme.TRAJCETORY_PATH_COLOR.red, colorScheme.TRAJCETORY_PATH_COLOR.green,
             colorScheme.TRAJCETORY_PATH_COLOR.blue, (PATH_OUTER_OPACITY * 255).toInt()
         )
-        gfx.draw(trajectoryDrawnPath)
+        if(!MeepMeep.CONTROL)
+            gfx.draw(trajectoryDrawnPath)
 
         gfx.stroke = innerStroke
         gfx.color = colorScheme.TRAJCETORY_PATH_COLOR
-        gfx.draw(trajectoryDrawnPath)
+        if(!MeepMeep.CONTROL)
+            gfx.draw(trajectoryDrawnPath)
     }
 
     override fun update(deltaTime: Long) {

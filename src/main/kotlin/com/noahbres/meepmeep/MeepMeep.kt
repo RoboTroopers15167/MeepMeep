@@ -17,7 +17,7 @@ import javax.swing.*
 import javax.swing.border.EtchedBorder
 
 
-open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: Int = 60) {
+open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: Int = 60, control: Boolean = false) {
     companion object {
         @JvmStatic
         lateinit var DEFAULT_AXES_ENTITY: AxesEntity
@@ -34,6 +34,9 @@ open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: 
 
         @JvmStatic
         lateinit var FONT_CMU_BOLD: Font
+
+        @JvmStatic
+        var CONTROL: Boolean = false
     }
 
     val windowFrame = WindowFrame("Meep Meep", windowSize)
@@ -73,12 +76,17 @@ open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: 
             }
         }
 
-        entityList.forEach { it.render(g, canvas.width, canvas.height) }
+        entityList.forEach {
+            it.render(g, canvas.width, canvas.height)
+        }
 
         // Draw fps
         g.font = Font("Sans", Font.BOLD, 20)
         g.color = ColorManager.COLOR_PALETTE.GREEN_600
-        g.drawString("%.1f FPS".format(loopManager.fps), 10, 20)
+
+        if(!CONTROL) {
+            g.drawString("%.1f FPS".format(loopManager.fps), 10, 20)
+        }
 
         // Draw mouse coords
         val mouseToFieldCoords = FieldUtil.screenCoordsToFieldCoords(
@@ -92,12 +100,13 @@ open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: 
         g.color =
             if (colorManager.isDarkMode) ColorManager.COLOR_PALETTE.GRAY_100 else ColorManager.COLOR_PALETTE.GRAY_800
 
-        g.drawString(
-            "(%.1f, %.1f)".format(
-                mouseToFieldCoords.x,
-                mouseToFieldCoords.y,
-            ), 10, canvas.height - 8
-        )
+        if (!CONTROL)
+            g.drawString(
+                "(%.1f, %.1f)".format(
+                    mouseToFieldCoords.x,
+                    mouseToFieldCoords.y,
+                ), 10, canvas.height - 8
+            )
 
         g.dispose()
         canvas.bufferStrat.show()
@@ -149,6 +158,8 @@ open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: 
     private var canvasMouseY = 0
 
     init {
+        CONTROL = control
+
         // Core init
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
@@ -187,19 +198,21 @@ open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: 
         middleButtonPanel.add(pathSelectionButton)
         middleButtonPanel.add(Box.createVerticalGlue())
 
-        windowFrame.canvasPanel.add(progressSliderMasterPanel)
+        if(!CONTROL)
+            windowFrame.canvasPanel.add(progressSliderMasterPanel)
 //        windowFrame.contentPane.add(middleButtonPanel)
 
         windowFrame.pack()
 
-        canvas.addMouseMotionListener(object : MouseMotionListener {
-            override fun mouseDragged(p0: MouseEvent?) {}
 
-            override fun mouseMoved(e: MouseEvent) {
-                canvasMouseX = e.x
-                canvasMouseY = e.y
-            }
-        })
+            canvas.addMouseMotionListener(object : MouseMotionListener {
+                override fun mouseDragged(p0: MouseEvent?) {}
+
+                override fun mouseMoved(e: MouseEvent) {
+                    canvasMouseX = e.x
+                    canvasMouseY = e.y
+                }
+            })
 
         canvas.addKeyListener(object : KeyListener {
             override fun keyTyped(p0: KeyEvent?) {}
@@ -238,8 +251,10 @@ open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: 
             "AXES_ENTITY",
         )
 
-        addEntity(DEFAULT_AXES_ENTITY)
-        addEntity(DEFAULT_COMPASS_ENTITY)
+        if(!CONTROL) {
+            addEntity(DEFAULT_AXES_ENTITY)
+            addEntity(DEFAULT_COMPASS_ENTITY)
+        }
     }
 
     fun start(): MeepMeep {
@@ -249,6 +264,7 @@ open class MeepMeep @JvmOverloads constructor(private val windowSize: Int, fps: 
         // Default added entities are initialized before color schemes are set
         // Thus make sure to reset them
         entityList.forEach {
+            println(it.tag)
             if (it is ThemedEntity) it.switchScheme(colorManager.theme)
             if (it is RoadRunnerBotEntity) it.start()
         }
